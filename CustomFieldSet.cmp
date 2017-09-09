@@ -1,0 +1,50 @@
+<aura:component controller="CustomFieldSet" implements="forceCommunity:availableForAllPageTypes" access="global" >
+    <aura:attribute name="sObj" type="String" default="Account" required="true"/>
+    <aura:attribute name="fSetName" type="String" default="singhforce__accountfieldset" required="true"/>
+    
+    <aura:attribute name="fieldlist" type="List"/>
+    <aura:attribute name="sObjWrapperlist" type="List"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" /> 
+    <div class="container">
+    <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+        <thead>
+            <tr class="slds-text-title_caps">
+                <aura:iteration items="{!v.fieldlist}" var="f">
+                    <th scope="col">
+                        <div class="slds-truncate" title="{!f.fLabel}">{!f.fLabel}</div>
+                    </th>
+                </aura:iteration>
+            </tr>
+        </thead>
+        <tbody>
+            <aura:iteration items="{!v.sObjWrapperlist}" var="obj">
+                <tr>    
+                    <aura:iteration items="{!obj}" var="obj2" >
+                        <td >
+                            <div class="slds-truncate" >
+                                <aura:if isTrue="{!obj2.fDetails.type == 'string' || obj2.fDetails.type == 'picklist'}">
+                                    <ui:outputText value="{!obj2.fvalue}" />
+                                </aura:if> 
+                                
+                                <aura:if isTrue="{!obj2.fDetails.type == 'datetime'}">
+                                    <ui:outputDateTime value="{!obj2.fvalue}" />
+                                </aura:if> 
+                                
+                                <aura:if isTrue="{!obj2.fDetails.type == 'int'}">
+                                    <ui:outputNumber value="{!obj2.fvalue}" format=".00"/>
+                                </aura:if>
+                                
+                                <aura:if isTrue="{!obj2.fDetails.type == 'currency'}">
+                                    <ui:outputCurrency value="{!obj2.fvalue}" format="$#,###.00"/>
+                                </aura:if>
+                            </div>
+                        </td>
+                    </aura:iteration>
+                </tr>
+                <br/>
+            </aura:iteration>
+        </tbody>
+    </table>
+    </div>
+</aura:component>
